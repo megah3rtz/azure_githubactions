@@ -21,9 +21,9 @@ resource "azurerm_kubernetes_cluster" "example" {
         name       = "default"
         node_count = 1
         vm_size    = "Standard_B2S"
-        orchestrator_version = "1.18.4"
+        orchestrator_version = "1.18.14"
     }
-  kubernetes_version    = "1.18.4"
+  kubernetes_version    = "1.18.14"
   identity {
     type = "SystemAssigned"
   }
