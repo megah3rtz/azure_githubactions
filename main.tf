@@ -34,5 +34,5 @@ resource "azurerm_kubernetes_cluster" "example" {
 
 resource "local_file" "kubeconfig" {
     content = azurerm_kubernetes_cluster.example.kube_config_raw
-    filename = "~/.kube/config"
+    filename = "/github/home/.kube/config"
 }
