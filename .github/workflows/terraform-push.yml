@@ -28,3 +28,12 @@ jobs:
       - name: Terraform Apply
         run: terraform apply -auto-approve
 
+      - name: Deploy argocd to the AKS cluster
+        uses: actions-hub/kubectl@master
+
+      - name: Create argocd namespace
+        run: kubectl create namespace argocd
+
+      - name: Create argocd in the namespace
+        run: kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+
