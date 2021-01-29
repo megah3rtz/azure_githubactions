@@ -31,4 +31,4 @@ jobs:
         run: terraform init -backend-config=terraform/backend/$BRANCH_NAME.tfvars terraform/
 
       - name: Terraform Plan
-        run: terraform plan -backend-config=terraform/backend/$BRANCH_NAME.tfvars terraform/
+        run: terraform plan terraform/
