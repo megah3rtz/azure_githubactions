@@ -16,6 +16,11 @@ jobs:
       ARM_SUBSCRIPTION_ID: "40381838-c0a3-4969-aa0d-3117649bedbe"
       ARM_TENANT_ID: "b0e39d04-0be9-4308-9203-d58b9c370bde"
     steps:
+
+      - name: Get the branch name
+        shell: bash
+        run: echo "::set-snv name=BRANCH-NAME::$(echo ${GITHUB_REF#refs/heads/})"
+
       - name: Checkout
         uses: actions/checkout@v2
 
@@ -23,7 +28,7 @@ jobs:
         uses: hashicorp/setup-terraform@v1
       
       - name: Terraform Init
-        run: terraform init
+        run: terraform init terraform/ -backend-config=terraform/backend/$BRANCH_NAME.tfvars
 
       - name: Terraform Plan
-        run: terraform plan
+        run: terraform plan terraform/ -backend-config=terraform/backend/$BRANCH_NAME.tfvars

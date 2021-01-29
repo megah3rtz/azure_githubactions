@@ -3,15 +3,6 @@ provider "azurerm" {
   features {}
 }
 
-terraform {
-  backend "azurerm" {
-    resource_group_name  = "rg-azure-githubactions"
-    storage_account_name = "saazuregithubactions"
-    container_name       = "azure-githubactions"
-    key                  = "terraform.tfstate"
-  }
-}
-
 resource "azurerm_kubernetes_cluster" "example" {
   name                = "example-aks1"
   location            = "North Europe"
@@ -28,7 +19,7 @@ resource "azurerm_kubernetes_cluster" "example" {
     type = "SystemAssigned"
   }
   tags = {
-    Environment = "Production"
+    Environment = var.environment
   }
 }
 
