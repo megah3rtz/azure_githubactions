@@ -19,7 +19,7 @@ jobs:
 
       - name: Get the branch name
         shell: bash
-        run: echo "BRANCH-NAME=$(echo ${GITHUB_REF#refs/heads/})" >> $GITHUB_ENV
+        run: echo "BRANCH_NAME=$(echo ${GITHUB_REF#refs/heads/})" >> $GITHUB_ENV
 
       - name: Checkout
         uses: actions/checkout@v2
