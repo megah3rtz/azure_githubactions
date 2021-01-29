@@ -28,7 +28,7 @@ jobs:
         uses: hashicorp/setup-terraform@v1
       
       - name: Terraform Init
-        run: terraform init terraform/ -backend-config=terraform/backend/$BRANCH_NAME.tfvars
+        run: terraform init -backend-config=terraform/backend/$BRANCH_NAME.tfvars terraform/
 
       - name: Terraform Plan
-        run: terraform plan terraform/ -backend-config=terraform/backend/$BRANCH_NAME.tfvars
+        run: terraform plan -backend-config=terraform/backend/$BRANCH_NAME.tfvars terraform/
