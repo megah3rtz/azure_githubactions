@@ -17,9 +17,9 @@ jobs:
       ARM_TENANT_ID: "b0e39d04-0be9-4308-9203-d58b9c370bde"
     steps:
 
-      - name: Get the branch name
+      - name: Get the destination branch name
         shell: bash
-        run: echo "BRANCH_NAME=$(echo ${GITHUB_REF#refs/heads/})" >> $GITHUB_ENV
+        run: echo "BRANCH_NAME=$(echo ${GITHUB_BASE_REF})" >> $GITHUB_ENV
 
       - name: Checkout
         uses: actions/checkout@v2
