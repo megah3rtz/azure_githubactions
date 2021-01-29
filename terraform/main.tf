@@ -1,7 +1,7 @@
 provider "azurerm" {
-  version = ">2.5.0"
   features {}
 }
+variable "environment" {}
 
 resource "azurerm_kubernetes_cluster" "example" {
   name                = "example-aks1"
