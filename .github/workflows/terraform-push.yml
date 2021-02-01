@@ -23,17 +23,7 @@ jobs:
         uses: hashicorp/setup-terraform@v1
 
       - name: Terraform Init
-        run: terraform init
+        run: terraform init -backend-config=terraform/backend/$BRANCH_NAME.tfvars terraform/
 
       - name: Terraform Apply
-        run: terraform apply -auto-approve
-
-      - name: Deploy argocd to the AKS cluster
-        uses: actions-hub/kubectl@master
-
-      - name: Create argocd namespace
-        run: kubectl create namespace argocd
-
-      - name: Create argocd in the namespace
-        run: kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
-
+        run: terraform apply -auto-approve terraform/
