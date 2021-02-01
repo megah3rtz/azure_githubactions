@@ -23,7 +23,7 @@ jobs:
         uses: hashicorp/setup-terraform@v1
 
       - name: Terraform Init
-        run: terraform init
+        run: terraform init -backend-config=terraform/backend/$BRANCH_NAME.tfvars terraform/
 
       - name: Terraform Apply
-        run: terraform apply -auto-approve
+        run: terraform apply -auto-approve terraform/
