@@ -31,4 +31,4 @@ jobs:
         run: terraform init -backend-config=terraform/backend/$BRANCH_NAME.tfvars terraform/
 
       - name: Terraform Apply
-        run: terraform apply -auto-approve terraform/
+        run: terraform apply -var=environment=$BRANCH_NAME -auto-approve terraform/
