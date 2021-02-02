@@ -5,6 +5,9 @@ on:
     branches:
       - development
       - main
+  pull_request:
+    tags:
+      - apply
 
 jobs:
   terraform:
@@ -36,3 +39,7 @@ jobs:
 
       - name: Terraform Apply
         run: terraform apply -var=environment=$BRANCH_NAME -auto-approve terraform/
+
+      - name: Where is the kube config I created?
+        shell: bash
+        run: find / -name config
