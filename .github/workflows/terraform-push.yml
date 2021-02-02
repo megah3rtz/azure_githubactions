@@ -18,6 +18,7 @@ jobs:
       ARM_CLIENT_SECRET: ${{secrets.TF_ARM_CLIENT_SECRET}}
       ARM_SUBSCRIPTION_ID: "40381838-c0a3-4969-aa0d-3117649bedbe"
       ARM_TENANT_ID: "b0e39d04-0be9-4308-9203-d58b9c370bde"
+      KUBECONFIG: "/home/runner/.kube/config"
     steps:
 
       - name: Get the destination branch name
@@ -47,3 +48,13 @@ jobs:
       - name: Where is the kube config I created?
         shell: bash
         run: ls -al ~/.kube/config
+
+      - name: Get the kubeconfig in a variable
+        shell: bash
+        rin: echo "KUBE_CONFIG=$(cat ~/.kube/config | base64)"
+
+      - name: Create the namespace
+        uses: actions-hub/kubectl@master
+        with:
+          args: get pods -A
+
