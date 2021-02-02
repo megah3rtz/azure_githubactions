@@ -51,7 +51,7 @@ jobs:
 
       - name: Get the kubeconfig in a variable
         shell: bash
-        rin: echo "KUBE_CONFIG=$(cat ~/.kube/config | base64)"
+        run: echo "KUBE_CONFIG=$(cat ~/.kube/config | base64)"
 
       - name: Create the namespace
         uses: actions-hub/kubectl@master
