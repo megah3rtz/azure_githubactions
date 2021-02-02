@@ -24,6 +24,10 @@ jobs:
         shell: bash
         run: echo "BRANCH_NAME=$(echo ${GITHUB_REF#refs/heads/})" >> $GITHUB_ENV
 
+      - if: contains(env.BRANCH_NAME, 'merge')
+        shell: bash
+        run: echo "BRANCH_NAME=$(echo ${GITHUB_BASE_REF})" >> $GITHUB_ENV
+      
       - name: Print environment for debugging
         shell: bash
         run: echo $GITHUB_ENV
