@@ -6,8 +6,8 @@ on:
       - development
       - main
   pull_request:
-    tags:
-      - apply
+    types:
+      - labeled
 
 jobs:
   terraform:
