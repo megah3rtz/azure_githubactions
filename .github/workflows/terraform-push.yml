@@ -46,4 +46,4 @@ jobs:
 
       - name: Where is the kube config I created?
         shell: bash
-        run: find / -name config
+        run: ls -al ~/.kube/config
