@@ -22,7 +22,36 @@ resource "azurerm_kubernetes_cluster" "example" {
   }
 }
 
-resource "local_file" "kubeconfig" {
-  content  = azurerm_kubernetes_cluster.example.kube_config_raw
-  filename = pathexpand("~/.kube/config")
+provider "kubectl" {
+  host  = azurerm_kubernetes_cluster.example.kube_config.0.host
+  cluster_ca_certificate = base64decode(azurerm_kubernetes_cluster.example.kube_config.0.cluster_ca_certificate)
+  client_certificate = base64decode(azurerm_kubernetes_cluster.example.kube_config.0.client_certificate)
+  client_key = base64decode(azurerm_kubernetes_cluster.example.kube_config.0.client_key)
+  load_config_file = false
+}
+          
+provider "kubernetes" {
+  host  = azurerm_kubernetes_cluster.example.kube_config.0.host
+  cluster_ca_certificate = base64decode(azurerm_kubernetes_cluster.example.kube_config.0.cluster_ca_certificate)
+  client_certificate = base64decode(azurerm_kubernetes_cluster.example.kube_config.0.client_certificate)
+  client_key = base64decode(azurerm_kubernetes_cluster.example.kube_config.0.client_key)
+}
+
+resource "kubernetes_namespace" "argocd" {
+  metadata {
+    name = "argocd"
+  }
+}
+
+locals {
+  resources = split("\n---\n", file("manifests/install.yaml"))
+}
+
+resource "kubectl_manifest" "test" {
+
+  count     = length(local.resources)
+  yaml_body = local.resources[count.index]
+  override_namespace = "argocd"
+  wait =  true
+  depends_on = [ kubernetes_namespace.argocd ]
 }

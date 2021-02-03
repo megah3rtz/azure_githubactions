@@ -5,6 +5,9 @@ on:
     branches:
       - development
       - main
+  pull_request:
+    types:
+      - labeled
 
 jobs:
   terraform:
@@ -15,12 +18,17 @@ jobs:
       ARM_CLIENT_SECRET: ${{secrets.TF_ARM_CLIENT_SECRET}}
       ARM_SUBSCRIPTION_ID: "40381838-c0a3-4969-aa0d-3117649bedbe"
       ARM_TENANT_ID: "b0e39d04-0be9-4308-9203-d58b9c370bde"
+      KUBECONFIG: "/home/runner/.kube/config"
     steps:
 
       - name: Get the destination branch name
         shell: bash
         run: echo "BRANCH_NAME=$(echo ${GITHUB_REF#refs/heads/})" >> $GITHUB_ENV
 
+      - if: contains(env.BRANCH_NAME, 'merge')
+        shell: bash
+        run: echo "BRANCH_NAME=$(echo ${GITHUB_BASE_REF})" >> $GITHUB_ENV
+      
       - name: Print environment for debugging
         shell: bash
         run: echo $GITHUB_ENV
@@ -36,3 +44,17 @@ jobs:
 
       - name: Terraform Apply
         run: terraform apply -var=environment=$BRANCH_NAME -auto-approve terraform/
+
+      - name: Where is the kube config I created?
+        shell: bash
+        run: ls -al ~/.kube/config
+
+      - name: Get the kubeconfig in a variable
+        shell: bash
+        run: echo "KUBE_CONFIG=$(cat ~/.kube/config | base64)"
+
+      - name: Create the namespace
+        uses: actions-hub/kubectl@master
+        with:
+          args: get pods -A
+
