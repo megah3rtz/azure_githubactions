@@ -55,3 +55,19 @@ resource "kubectl_manifest" "test" {
   wait =  true
   depends_on = [ kubernetes_namespace.argocd ]
 }
+
+provider "helm" {
+  kubernetes {
+    host  = azurerm_kubernetes_cluster.example.kube_config.0.host
+    cluster_ca_certificate = base64decode(azurerm_kubernetes_cluster.example.kube_config.0.cluster_ca_certificate)
+    client_certificate = base64decode(azurerm_kubernetes_cluster.example.kube_config.0.client_certificate)
+    client_key = base64decode(azurerm_kubernetes_cluster.example.kube_config.0.client_key)
+  }
+}
+
+resource "helm_release" "argocd-bootstrap" {
+  name = "argocd-bootstrap"
+  namespace = "argocd"
+  chart = "chart/argocd"
+  create_namespace = "true"
+}
