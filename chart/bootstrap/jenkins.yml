@@ -14,6 +14,11 @@ spec:
     path: 
     repoURL: https://charts.jenkins.io
     targetRevision: 3.1.8
+    helm:
+      values: |-
+        
+        persistence:
+          enabled: false
   syncPolicy:
     automated:
       prune: true
