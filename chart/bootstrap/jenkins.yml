@@ -10,8 +10,7 @@ spec:
     namespace: jenkins
     server: https://kubernetes.default.svc
   project: default
-  source:
-    path: 
+  source: 
     repoURL: https://charts.jenkins.io
     chart: jenkins
     targetRevision: 3.1.8
