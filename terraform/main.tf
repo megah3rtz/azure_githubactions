@@ -22,6 +22,16 @@ resource "azurerm_kubernetes_cluster" "example" {
   }
 }
 
+resource "azurerm_kubernetes_cluster_node_pool" "spotpool" {
+  name = "spotpool"
+  kubernetes_cluster_id = azurerm_kubernetes_cluster.example.id
+  vm_size = "Standard_DS1_v2"
+  node_count = 2
+  priority = "Spot"
+  eviction_policy = "Delete"
+  spot_max_price = 1
+}
+
 provider "helm" {
   kubernetes {
     host  = azurerm_kubernetes_cluster.example.kube_config.0.host
